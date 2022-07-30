@@ -803,13 +803,14 @@ module.exports = grammar({
         ['>>>', 'binary_shift'],
         ['<<', 'binary_shift'],
         ['&', 'bitwise_and'],
-        ['^', 'bitwise_xor'],
+        ['^', 'binary_exp', 'right'],
         ['|', 'bitwise_or'],
         ['+', 'binary_plus'],
         ['-', 'binary_plus'],
         ['*', 'binary_times'],
         ['/', 'binary_times'],
         ['%', 'binary_times'],
+        ['^^', 'bitwise_xor'],
         ['**', 'binary_exp', 'right'],
         ['<', 'binary_relation'],
         ['<=', 'binary_relation'],
@@ -970,6 +971,8 @@ module.exports = grammar({
 
       const bigint_literal = seq(choice(hex_literal, binary_literal, octal_literal, decimal_digits), 'n')
 
+      const bigdecimal_literal = seq(choice(hex_literal, binary_literal, octal_literal, decimal_digits), 'm')
+
       const decimal_integer_literal = choice(
         '0',
         seq(optional('0'), /[1-9]/, optional(seq(optional('_'), decimal_digits)))
@@ -988,6 +991,7 @@ module.exports = grammar({
         binary_literal,
         octal_literal,
         bigint_literal,
+        bigdecimal_literal,
       ))
     },
 
