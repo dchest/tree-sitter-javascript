@@ -971,7 +971,7 @@ module.exports = grammar({
 
       const bigint_literal = seq(choice(hex_literal, binary_literal, octal_literal, decimal_digits), 'n')
 
-      const bigdecimal_literal = seq(choice(hex_literal, binary_literal, octal_literal, decimal_digits), 'm')
+      const bigdecimal_literal = seq(choice(decimal_digits), 'm')
 
       const decimal_integer_literal = choice(
         '0',
