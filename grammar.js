@@ -696,7 +696,7 @@ module.exports = grammar({
           alias($._reserved_identifier, $.identifier),
           $.identifier,
         )),
-        $._call_signature
+        $._call_signature,
       ),
       '=>',
       field('body', choice(
@@ -971,7 +971,7 @@ module.exports = grammar({
 
       const bigint_literal = seq(choice(hex_literal, binary_literal, octal_literal, decimal_digits), 'n')
 
-      const bigdecimal_literal = seq(choice(decimal_digits), 'm')
+      const bigdecimal_literal = seq(choice(hex_literal, binary_literal, octal_literal, decimal_digits), 'm')
 
       const decimal_integer_literal = choice(
         '0',
@@ -979,8 +979,8 @@ module.exports = grammar({
       )
 
       const decimal_literal = choice(
-        seq(decimal_integer_literal, '.', optional(decimal_digits), optional(exponent_part)),
-        seq('.', decimal_digits, optional(exponent_part)),
+        seq(decimal_integer_literal, '.', optional(decimal_digits), optional(exponent_part), optional('m')),
+        seq('.', decimal_digits, optional(exponent_part), optional('m')),
         seq(decimal_integer_literal, exponent_part),
         seq(decimal_digits),
       )
