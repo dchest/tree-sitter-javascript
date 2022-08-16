@@ -971,16 +971,28 @@ module.exports = grammar({
 
       const bigint_literal = seq(choice(hex_literal, binary_literal, octal_literal, decimal_digits), 'n')
 
-      const bigdecimal_literal = seq(choice(hex_literal, binary_literal, octal_literal, decimal_digits), 'm')
-
       const decimal_integer_literal = choice(
         '0',
         seq(optional('0'), /[1-9]/, optional(seq(optional('_'), decimal_digits)))
       )
 
+      const bigdecimal_literal = choice(
+        seq(decimal_integer_literal, '.', optional(decimal_digits), optional(exponent_part), 'm'),
+        seq('.', decimal_digits, optional(exponent_part), 'm'),
+        seq(decimal_integer_literal, exponent_part, 'm'),
+        seq(decimal_digits, 'm'),
+      )
+
+      const bigfloat_literal = choice(
+        seq(decimal_integer_literal, '.', optional(decimal_digits), optional(exponent_part), 'l'),
+        seq('.', decimal_digits, optional(exponent_part), 'l'),
+        seq(decimal_integer_literal, exponent_part, 'l'),
+        seq(decimal_digits, 'l'),
+      )
+
       const decimal_literal = choice(
-        seq(decimal_integer_literal, '.', optional(decimal_digits), optional(exponent_part), optional('m')),
-        seq('.', decimal_digits, optional(exponent_part), optional('m')),
+        seq(decimal_integer_literal, '.', optional(decimal_digits), optional(exponent_part)),
+        seq('.', decimal_digits, optional(exponent_part)),
         seq(decimal_integer_literal, exponent_part),
         seq(decimal_digits),
       )
@@ -992,6 +1004,7 @@ module.exports = grammar({
         octal_literal,
         bigint_literal,
         bigdecimal_literal,
+        bigfloat_literal
       ))
     },
 
